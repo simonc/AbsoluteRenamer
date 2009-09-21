@@ -1,6 +1,22 @@
 = AbsoluteRenamer
 
-Description goes here.
+AbsoluteRenamer is a very powerful tool that helps files and directories renaming using the Krename syntax.
+
+= SYNOPSIS:
+
+absrenamer[OPTION]... [FILE]...
+
+absrenamer-f 'photo_##' -x '%' IMG*.JPG
+
+= REQUIREMENTS:
+
+* Ruby >= 1.8.7 (earlier releases will not work)
+
+= INSTALL:
+
+You can simply install AbsoluteRenamer with gem :
+
+sudo gem install simonc-AbsoluteRenamer
 
 == Note on Patches/Pull Requests
  

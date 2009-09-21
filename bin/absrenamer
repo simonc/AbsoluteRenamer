@@ -1,0 +1,54 @@
+#!/usr/bin/env ruby
+
+#
+# = Synopsis
+#
+# Does a batch renaming on files and directories
+#
+# = Usage
+#
+# absrenamer [options] [file]...
+#
+# = Description
+#
+# AbsoluteRenamer is a very powerful tool that helps files and directories
+# renaming using the Krename syntax.
+#
+# It is extendable by adding new command line parsers,
+# new renaming modules and plugins.
+#
+# Parsers allow to add new command line options.
+# Modules allow to add new renaming patterns (like ID3 tags).
+# Plugins allow to add new features like file listing instead of renaming.
+#
+# = Exemple
+#
+#   absrenamer-f '[1;2]_[*4-]' *.mp3
+#   # => takes the first two characters of the original name
+#   #    and Camelizes from the fourth to the end.
+#
+# = Copyright (c) 2009 Simon COURTOIS
+# Licensed under the GNU Public License
+
+$:.unshift File.dirname(__FILE__) << '/../lib'
+
+require 'absolute_renamer'
+require 'absolute_renamer/config'
+require 'absolute_renamer/parser'
+require 'absolute_renamer/external'
+
+config_path = File.dirname(__FILE__)+'/../conf/absrenamer/absrenamer.conf'
+config_path = '/etc/absrenamer/absrenamer.conf' if File.exists?('/etc/absrenamer/absrenamer.conf')
+custom_conf = '~/.absrenamerrc'
+
+AbsoluteRenamer::Config.load(config_path)
+AbsoluteRenamer::Config.load(custom_conf) if File.exists? custom_conf
+
+AbsoluteRenamer::Parser.parse_cmd_line
+
+AbsoluteRenamer::External.load_modules
+AbsoluteRenamer::External.load_plugins
+
+AbsoluteRenamer::Processor.load_plugins
+AbsoluteRenamer::Processor.create_names_list
+AbsoluteRenamer::Processor.do_renaming

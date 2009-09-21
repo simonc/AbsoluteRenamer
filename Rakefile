@@ -5,8 +5,10 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "AbsoluteRenamer"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{AbsoluteRenamer is a very powerful tool that helps files and directories renaming using the Krename syntax.}
+    gem.description = %Q{Unlike many batch renaming tools, AbsoluteRenamer is able to rename folders.
+                         AbsoluteRenamer is modular and can be extended to adapt itself to any kind of file
+                         or to add new options and features.}
     gem.email = "happynoff@free.fr"
     gem.homepage = "http://github.com/simonc/AbsoluteRenamer"
     gem.authors = ["Simon COURTOIS"]
