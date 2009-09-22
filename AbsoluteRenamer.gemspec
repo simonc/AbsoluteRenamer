@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{AbsoluteRenamer}
-  s.version = "0.9.1"
+  s.version = "0.9.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Simon COURTOIS"]
@@ -49,6 +49,10 @@ Gem::Specification.new do |s|
      "lib/absolute_renamer/parser.rb",
      "lib/absolute_renamer/use_config.rb",
      "lib/absolute_renamer/with_children.rb",
+     "test/absolute_renamer_test.rb",
+     "test/config_test.rb",
+     "test/file_info_test.rb",
+     "test/file_test.rb",
      "test/test_helper.rb"
   ]
   s.homepage = %q{http://github.com/simonc/AbsoluteRenamer}
@@ -58,6 +62,9 @@ Gem::Specification.new do |s|
   s.summary = %q{AbsoluteRenamer is a very powerful tool that helps files and directories renaming using the Krename syntax.}
   s.test_files = [
     "test/absolute_renamer_test.rb",
+     "test/config_test.rb",
+     "test/file_info_test.rb",
+     "test/file_test.rb",
      "test/test_helper.rb"
   ]
 
