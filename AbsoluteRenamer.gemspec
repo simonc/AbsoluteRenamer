@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Simon COURTOIS"]
-  s.date = %q{2009-09-21}
+  s.date = %q{2009-09-22}
   s.default_executable = %q{absrenamer}
   s.description = %q{Unlike many batch renaming tools, AbsoluteRenamer is able to rename folders.
                          AbsoluteRenamer is modular and can be extended to adapt itself to any kind of file
@@ -23,10 +23,32 @@ Gem::Specification.new do |s|
   s.files = [
     ".document",
      ".gitignore",
+     "AbsoluteRenamer.gemspec",
      "LICENSE",
      "README.rdoc",
      "Rakefile",
      "VERSION",
+     "bin/absrenamer",
+     "conf/absrenamer/absrenamer.conf",
+     "lib/absolute_renamer.rb",
+     "lib/absolute_renamer/config.rb",
+     "lib/absolute_renamer/external.rb",
+     "lib/absolute_renamer/external/modules/core/case/module.rb",
+     "lib/absolute_renamer/external/modules/core/general/module.rb",
+     "lib/absolute_renamer/external/parsers/core/general/parser.rb",
+     "lib/absolute_renamer/external/parsers/interactive/parser.rb",
+     "lib/absolute_renamer/external/parsers/listing/parser.rb",
+     "lib/absolute_renamer/external/plugins/interactive/plugin.rb",
+     "lib/absolute_renamer/external/plugins/listing/plugin.rb",
+     "lib/absolute_renamer/file_info.rb",
+     "lib/absolute_renamer/imodule.rb",
+     "lib/absolute_renamer/iparser.rb",
+     "lib/absolute_renamer/iplugin.rb",
+     "lib/absolute_renamer/libs/file.rb",
+     "lib/absolute_renamer/libs/string.rb",
+     "lib/absolute_renamer/parser.rb",
+     "lib/absolute_renamer/use_config.rb",
+     "lib/absolute_renamer/with_children.rb",
      "test/test_helper.rb"
   ]
   s.homepage = %q{http://github.com/simonc/AbsoluteRenamer}
