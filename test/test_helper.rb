@@ -5,6 +5,8 @@ require 'shoulda'
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'absolute_renamer'
+require 'absolute_renamer/libs/string'
+require 'absolute_renamer/libs/file'
 
 class Test::Unit::TestCase
 end
