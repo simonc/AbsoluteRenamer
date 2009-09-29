@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{AbsoluteRenamer}
-  s.version = "0.9.2"
+  s.version = "0.10.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Simon COURTOIS"]
-  s.date = %q{2009-09-22}
+  s.date = %q{2009-09-29}
   s.default_executable = %q{absrenamer}
   s.description = %q{Unlike many batch renaming tools, AbsoluteRenamer is able to rename folders.
                          AbsoluteRenamer is modular and can be extended to adapt itself to any kind of file
@@ -45,6 +45,7 @@ Gem::Specification.new do |s|
      "lib/absolute_renamer/iparser.rb",
      "lib/absolute_renamer/iplugin.rb",
      "lib/absolute_renamer/libs/file.rb",
+     "lib/absolute_renamer/libs/hash.rb",
      "lib/absolute_renamer/libs/string.rb",
      "lib/absolute_renamer/parser.rb",
      "lib/absolute_renamer/use_config.rb",
@@ -53,6 +54,11 @@ Gem::Specification.new do |s|
      "test/config_test.rb",
      "test/file_info_test.rb",
      "test/file_test.rb",
+     "test/hash_test.rb",
+     "test/imodule_test.rb",
+     "test/iplugin_test.rb",
+     "test/parser_test.rb",
+     "test/string_test.rb",
      "test/test_helper.rb"
   ]
   s.homepage = %q{http://github.com/simonc/AbsoluteRenamer}
@@ -65,6 +71,11 @@ Gem::Specification.new do |s|
      "test/config_test.rb",
      "test/file_info_test.rb",
      "test/file_test.rb",
+     "test/hash_test.rb",
+     "test/imodule_test.rb",
+     "test/iplugin_test.rb",
+     "test/parser_test.rb",
+     "test/string_test.rb",
      "test/test_helper.rb"
   ]
 
