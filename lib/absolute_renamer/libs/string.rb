@@ -12,9 +12,9 @@ class String
 
     # Camelizes a string and returns it.
     #    str = "Hello.THE World"
-    #    str.camelize!                  # => "Hello.The World"
-    #    str.camelize!(/[\.]/)          # => "Hello.The World"
-    #    str                            # => "Hello.The World"
+    #    str.camelize!          # => "Hello.The World"
+    #    str.camelize!(/[\.]/)  # => "Hello.The World"
+    #    str                    # => "Hello.The World"
     def camelize!(word_separators = /[\W_]/)
         self.downcase!
         self.each_char.each_with_index do |c,i|
