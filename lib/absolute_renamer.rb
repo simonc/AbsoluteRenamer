@@ -8,6 +8,7 @@ require 'absolute_renamer/parser'
 require 'absolute_renamer/file_info'
 require 'absolute_renamer/libs/file'
 require 'absolute_renamer/libs/string'
+require 'absolute_renamer/libs/hash'
 require 'absolute_renamer/use_config'
 
 # top level module of AbsoluteRenamer.

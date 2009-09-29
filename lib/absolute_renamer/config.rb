@@ -7,7 +7,11 @@ module AbsoluteRenamer
             # Open and load a Yaml file into the +@conf+ variable.
             # config_path: path of the file to load.
             def load(config_path)
-                @conf = YAML::load_file(config_path)
+                @conf ||= {}
+
+                if tmp_conf = YAML::load_file(config_path)
+                  @conf.deep_merge! tmp_conf
+                end
 
                 @conf[:options] ||= {}
                 @conf[:options][:format] ||= '$'
