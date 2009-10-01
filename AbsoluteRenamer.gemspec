@@ -11,9 +11,7 @@ Gem::Specification.new do |s|
   s.authors = ["Simon COURTOIS"]
   s.date = %q{2009-10-01}
   s.default_executable = %q{absrenamer}
-  s.description = %q{Unlike many batch renaming tools, AbsoluteRenamer is able to rename folders.
-                         AbsoluteRenamer is modular and can be extended to adapt itself to any kind of file
-                         or to add new options and features.}
+  s.description = %q{AbsoluteRenamer is a very powerful tool that helps files and directories renaming using the Krename syntax. Unlike many batch renaming tools, AbsoluteRenamer is able to rename folders. AbsoluteRenamer is modular and can be extended to adapt itself to any kind of file or to add new options and features.}
   s.email = %q{happynoff@free.fr}
   s.executables = ["absrenamer"]
   s.extra_rdoc_files = [
