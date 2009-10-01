@@ -13,6 +13,7 @@ begin
     gem.homepage = "http://github.com/simonc/AbsoluteRenamer"
     gem.authors = ["Simon COURTOIS"]
     gem.add_development_dependency "thoughtbot-shoulda"
+    gem.rubyforge_project = "absrenamer"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
 rescue LoadError
