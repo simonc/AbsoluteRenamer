@@ -13,8 +13,11 @@ require 'absolute_renamer/use_config'
 
 # top level module of AbsoluteRenamer.
 module AbsoluteRenamer
-    VERSION = "0.9.1"
-    
+    version_file_path = File.join(File.dirname(__FILE__), '/../VERSION')
+    File.open(version_file_path) do |f|
+        VERSION = f.read
+    end
+
     # The main class of AbsoluteRenamer.
     #
     # Organizes the files and directories renaming process.
