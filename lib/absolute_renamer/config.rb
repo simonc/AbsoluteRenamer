@@ -21,13 +21,13 @@ module AbsoluteRenamer
             # Returns a configuration value identified by +key+.
             # If +key+ is ignored, returns the +@conf+ hash.
             def get(key = nil)
-                return @conf[key] if @conf.has_key?(key)
-                return @conf
+                return @conf[key] if (key and @conf.has_key?(key))
+                return @conf if key.nil?
             end
 
             # Sets a configuration value in the +@conf+ variable.
             def set(key, value = '')
-                @conf[key] = value
+                @conf[key] = value unless key.nil?
             end
 
             # Returns a configuration value identified by +key+.

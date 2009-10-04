@@ -29,9 +29,9 @@ class ConfigTest < Test::Unit::TestCase
         assert_equal(:test_val, AbsoluteRenamer::Config.get(:test_key))
       end
 
-      should "be able to set and get a config option with the nil key" do
+      should "return the whole configuration if the getting key is nil" do
         AbsoluteRenamer::Config.set(nil, :test_val)
-        assert_equal(:test_val, AbsoluteRenamer::Config.get(nil))
+        assert_equal(AbsoluteRenamer::Config.get, AbsoluteRenamer::Config.get(nil))
       end
 
       should "be able to set config options using []" do
