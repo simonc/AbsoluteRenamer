@@ -22,11 +22,15 @@ module AbsoluteRenamer
                       'Format string used as model') do |format|
                 options[:format] = format
                 @format_given = true
+
+                raise "Format cannot contain the / character." if format.match(/\//)
             end
 
             parser.on('-x', '--ext-format FORMAT',
                       'Format string used as model for the extension') do |format|
                 options[:ext_format] = format
+
+                raise "Format cannot contain the / character." if format.match(/\//)
             end
 
             parser.on('-R', '--recursive',
