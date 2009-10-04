@@ -29,7 +29,6 @@ module AbsoluteRenamer
 
             def find_gems
                 installed_gems = Gem.source_index.find_name(/.*AbsoluteRenamer-.*/).map(&:name).uniq || []
-                p installed_gems
                 installed_gems.each do |gem_name|
                     @gems[gem_name] = { :lib => gem_name, :version => '>= 0' }
                 end
