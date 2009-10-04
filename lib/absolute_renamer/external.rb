@@ -19,6 +19,7 @@ module AbsoluteRenamer
 
                     find_gems
                     find_gems_from_conf
+                    exclude_gems
 
                     @gems.each do |gem_name, gem_infos|
                         gem gem_name, gem_infos[:version]
@@ -41,6 +42,12 @@ module AbsoluteRenamer
                         @gems[gem_name][:lib] ||= gem_name
                         @gems[gem_name][:version] ||= ">= 0"
                     end
+                end
+            end
+
+            def exclude_gems
+                if @conf[:exclude]
+                    @gems.reject! { |gem_name, gem_infos| @conf[:exclude].include? gem_name }
                 end
             end
 
