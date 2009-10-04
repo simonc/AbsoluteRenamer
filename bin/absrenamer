@@ -51,10 +51,10 @@ AbsoluteRenamer::Config.load(config_path)
 AbsoluteRenamer::Config.load(global_conf) if File.exists? global_conf
 AbsoluteRenamer::Config.load(custom_conf) if File.exists? custom_conf
 
-AbsoluteRenamer::Parser.parse_cmd_line
+AbsoluteRenamer::External.load_gems
+AbsoluteRenamer::External.load_core
 
-AbsoluteRenamer::External.load_modules
-AbsoluteRenamer::External.load_plugins
+AbsoluteRenamer::Parser.parse_cmd_line
 
 AbsoluteRenamer::Processor.load_plugins
 AbsoluteRenamer::Processor.create_names_list

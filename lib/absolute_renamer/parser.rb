@@ -13,24 +13,6 @@ module AbsoluteRenamer
             # The parsers are written in configuration files.
             # The core parsers are automaticaly added.
             def parse_cmd_line
-                parsers_dir = conf[:path][:parsers]
-                parsers = conf[:parsers]
-
-                core_parsers = ['general']
-
-                parsers += core_parsers.map! { |core_parser| File.join('core', core_parser) }
-
-                parsers.each do |parser|
-                    parser_file = File.join(parsers_dir, parser, 'parser.rb')
-                    begin
-                        if require parser_file
-                            puts "Loaded: #{parser_file}" if conf[:debug]
-                        end
-                    rescue LoadError => e
-                        STDERR.puts(e)
-                    end
-                end
-
                 ARGV.options do |parser|
                     begin
                         list = AbsoluteRenamer::IParser.children
