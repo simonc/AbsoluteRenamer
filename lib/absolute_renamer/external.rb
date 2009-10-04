@@ -2,54 +2,51 @@ require 'absolute_renamer/imodule'
 require 'absolute_renamer/iplugin'
 require 'absolute_renamer/use_config'
 
+begin
+    require 'rubygems'
+rescue LoadError
+end
+
 module AbsoluteRenamer
-    # Class in charge of loading +modules+ and +plugins+.
+    # Class in charge of loading external modules.
     class External
         class << self
             include AbsoluteRenamer::UseConfig
 
-            # Loads the additional and core modules.
-            # The modules list is get from the conf[:modules] variable.
-            # The core modules are loaded after the additional ones.
-            #
-            # See also load
-            def load_modules
-                puts "[Loading modules]" if conf[:debug]
+            def load_gems
+                if Gem
+                    @gems = {}
 
-                modules = conf[:modules]
-                load(modules, :modules, 'module.rb') unless modules.nil?
+                    find_gems
+                    find_gems_from_conf
 
-                core_modules = ['case', 'general'].map! { |core_module| File.join('core', core_module) }
-                load(core_modules, :modules, 'module.rb')
-            end
-
-            # Loads the plugins.
-            # The plugins list is get from the conf[:plugins] variable.
-            #
-            # See also load
-            def load_plugins
-                puts "[Loading plugins]" if conf[:debug]
-
-                load(conf[:plugins], :plugins, 'plugin.rb')
-            end
-
-            # Loads an external list (+modules+ or +plugins+)
-            # externals: a list of +externals+ names to load.
-            # type: a symbol defining which type of external to load
-            # file: the filename to require to load the +externals+
-            def load(externals, type, file)
-                ext_dir = conf[:path][type]
-
-                externals.each do |external|
-                    ext_to_load = File.join(ext_dir, external, file)
-                    begin
-                        if require ext_to_load
-                            puts "Loaded: #{ext_to_load}" if conf[:debug]
-                        end
-                    rescue LoadError => e
-                        STDERR.puts(e)
+                    @gems.each do |gem_name, gem_infos|
+                        gem gem_name, gem_infos[:version]
+                        require gem_infos[:lib]
                     end
                 end
+            end
+
+            def find_gems
+                installed_gems = Gem.source_index.find_name(/.*AbsoluteRenamer-.*/).map(&:name).uniq || []
+                p installed_gems
+                installed_gems.each do |gem_name|
+                    @gems[gem_name] = { :lib => gem_name, :version => '>= 0' }
+                end
+            end
+
+            def find_gems_from_conf
+                if conf[:gems]
+                    conf[:gems].each do |gem_name, gem_infos|
+                        @gems[gem_name] = gem_infos ||= {}
+                        @gems[gem_name][:lib] ||= gem_name
+                        @gems[gem_name][:version] ||= ">= 0"
+                    end
+                end
+            end
+
+            def load_core
+                require 'absolute_renamer/core-packages/core-packages'
             end
         end
     end
