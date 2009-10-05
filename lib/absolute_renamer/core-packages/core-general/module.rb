@@ -85,6 +85,8 @@ module AbsoluteRenamer
                 val = str[x].chr
             end
 
+            val ||= ''
+
             unless modifier.nil?
                 mp = CaseModule.method(CaseModule.actions[modifier])
                 val = mp.call(val)
