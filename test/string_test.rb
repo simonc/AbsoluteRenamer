@@ -19,14 +19,6 @@ class LibStringTest < Test::Unit::TestCase
       assert_equal("Hello..World", "hello..world".camelize)
     end
 
-    should "return Hello.World when camelizing hello.world with the /\./ separation pattern" do
-      assert_equal("Hello.World", "hello.world".camelize(/\./))
-    end
-
-    should "return Hello The.world when camelizing hello THE.world with the / / separation pattern" do
-      assert_equal("Hello The.world", "hello THE.world".camelize(/ /))
-    end
-
     context "set to hello world" do
 
       setup do
