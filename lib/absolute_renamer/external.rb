@@ -22,6 +22,7 @@ module AbsoluteRenamer
                     exclude_gems
 
                     @gems.each do |gem_name, gem_infos|
+                        puts "Loading gem #{gem_name} (#{gem_infos[:version]}) : #{gem_infos[:lib]}" if conf[:debug]
                         gem gem_name, gem_infos[:version]
                         require gem_infos[:lib]
                     end
