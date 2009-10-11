@@ -13,6 +13,24 @@ module AbsoluteRenamer
             name.intern
         end
 
+        # Returns a format pattern generated from pattern_string that
+        # can be used to match strings like [*test] in the filename format
+        #   pattern('test') #=> '(\[(.)?test\])'
+        def pattern(pattern_string)
+            Regexp.new "(\\[(.)?#{pattern_string}\\])"
+        end
+
+        # Returns a value modified using a modifier defined in the Case module
+        #   modifiy('value', '&') #=> 'VALUE'
+        #   modifiy('value', '*') #=> 'Value'
+        def modify(val, modifier)
+            unless modifier.nil?
+                mod = CaseModule.method(CaseModule.actions[modifier])
+                val = mod.call(val)
+            end
+            val
+        end
+
         # Process a +file+ by searching for a known pattern in its name
         # and replacing it by the corresponding value.
         # The pattern is a regular expression obtained by concatening
@@ -30,7 +48,7 @@ module AbsoluteRenamer
 
             idx = str.index(pattern)
             while idx
-                matched = pattern.match(str).to_a.compact
+                matched = pattern.match(str).to_a
                 part = str.partition(matched[0])
                 result.push(part[0])
                 val = self.interpret(file, matched, type)

@@ -40,6 +40,22 @@ class IModuleTest < Test::Unit::TestCase
         assert_equal(@default_string, @imodule.interpret(@fileinfo, @infos, :ext))
       end
 
+      should "be able to build a pattern from a pattern_string" do
+        assert_equal(/(\[(.)?test\])/, @imodule.pattern('test'))
+      end
+
+      context "and core modules loaded" do
+
+          setup do
+            AbsoluteRenamer::External.load_core
+          end
+
+          should "be able to return a string transformed with a case modifier" do
+            assert_equal("Hello World", @imodule.modify("heLLo wORLd", "*"))
+          end
+
+      end
+
     end
   end
 end
