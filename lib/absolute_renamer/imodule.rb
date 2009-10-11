@@ -44,7 +44,7 @@ module AbsoluteRenamer
 
             str = format
             result = []
-            pattern = Regexp.new(@filters.join('|'))
+            pattern = Regexp.union @filters
 
             idx = str.index(pattern)
             while idx

@@ -1,31 +1,39 @@
 module AbsoluteRenamer
     class GeneralModule < AbsoluteRenamer::IModule
         def initialize
-            @actions = {'*'  => :file_camelize,
-                        '$'  => :file_original,
-                        '%'  => :file_downcase,
-                        '&'  => :file_upcase,
-                        '\\' => :file_strip,
-                        '#'  => :count
-                       }
+            @actions = {
+                '*'  => :file_camelize,
+                '$'  => :file_original,
+                '%'  => :file_downcase,
+                '&'  => :file_upcase,
+                '\\' => :file_strip,
+                '#'  => :count
+            }
 
-            @case_filters = ['(\\\\\*)',    # \*
-                             '(\\\\\$)',    # \$
-                             '(\\\%)',      # \%
-                             '(\\\&)',      # \&
-                             '(\\\\\\\)',   # \\
-                             '(\*)',        # *
-                             '(\$)',        # $
-                             '(%)',         # %
-                             '(&)',         # &
-                             '(\\\)'        # \
-                            ]
+            @case_filters = [
+                /\\\*/,     # \*
+                /\\\$/,     # \$
+                /\\%/,      # \%
+                /\\&/,      # \&
+                /\\\\/,     # \\
+                /\*/,       # *
+                /\$/,       # $
+                /%/,        # %
+                /&/,        # &
+                /\\/        # \
+            ]
 
             # matches strings like [42-43] [42-] [*42-43] [42;43] etc...
-            @part_filters = ['(\[(.)?(\d+)(((-)(\d+)?)|((;)(\d+)))?\])']
+            @part_filters = [
+                pattern('(\d+)((-(\d+)?)|(;\d+))?')
+            ]
 
             # matches counters like # ### #{2} ##{2;42} or [length-42]
-            @misc_filters = ['(/)', '(#+(\{.*\})?)', '(\[length(--?\d+)?\])']
+            @misc_filters = [
+                /\//,
+                /#+(\{.*\})?/,
+                /\[length(--?\d+)?\]/
+            ]
 
             @filters = @case_filters + @part_filters + @misc_filters
         end
@@ -67,7 +75,6 @@ module AbsoluteRenamer
         def file_part(file, infos, type)
             matched = infos[0].match(/(\[([^\d])?(\d+)(((;)(\d+))|((-)(\d+)?))?\])/)
 
-            modifier = matched[2]
             x = matched[3].to_i - 1
             y = matched[7] || matched[10]
             y = y.to_i unless y.nil?        
@@ -87,11 +94,7 @@ module AbsoluteRenamer
 
             val ||= ''
 
-            unless modifier.nil?
-                mp = CaseModule.method(CaseModule.actions[modifier])
-                val = mp.call(val)
-            end
-            val
+            modify val, matched[2]
         end
 
         def count(file, infos, type)
