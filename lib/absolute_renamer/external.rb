@@ -14,7 +14,7 @@ module AbsoluteRenamer
             include AbsoluteRenamer::UseConfig
 
             def load_gems
-                if Gem
+                if defined?(Gem)
                     @gems = {}
 
                     find_gems
