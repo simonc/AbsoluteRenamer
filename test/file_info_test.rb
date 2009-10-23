@@ -33,6 +33,10 @@ class FileInfoTest < Test::Unit::TestCase
         assert_equal(false, @fileinfo.dir)
       end
 
+      should "be able to return a colorized string" do
+          assert_equal("\e[31mhello\e[0m", @fileinfo.color('hello'))
+      end
+
     end
 
     context "loaded with lib/absolute_renamer" do

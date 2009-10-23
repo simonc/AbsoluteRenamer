@@ -40,9 +40,15 @@ module AbsoluteRenamer
         end
 
         # Displays the action that will be done on the file.
-        # some_fileinfo.display_change      # => "rename a_file.txt --> A_File.TXT"
+        #   some_fileinfo.display_change    # => "rename a_file.txt --> A_File.TXT"
         def display_change
-            puts "#{conf[:options][:mode]} #{@real_path.sub(Dir.pwd+'/', '')} --> #{new_path.sub(Dir.pwd+'/', '')}"
+            puts "#{color conf[:options][:mode]} #{@real_path.sub(Dir.pwd+'/', '')} #{color '-->'} #{new_path.sub(Dir.pwd+'/', '')}"
+        end
+
+        # Returns a text colorized in red.
+        #   color('hello')                  #=> "\e[31mhello\e[0m"
+        def color(text)
+            "\e[31m#{text}\e[0m"
         end
 
         # Returns the new path of the file.
