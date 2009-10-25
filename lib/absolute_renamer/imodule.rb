@@ -24,7 +24,7 @@ module AbsoluteRenamer
         #   modifiy('value', '&') #=> 'VALUE'
         #   modifiy('value', '*') #=> 'Value'
         def modify(val, modifier)
-            unless modifier.nil?
+            if CaseModule.actions.include?(modifier)
                 mod = CaseModule.method(CaseModule.actions[modifier])
                 val = mod.call(val)
             end

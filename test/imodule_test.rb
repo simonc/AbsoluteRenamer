@@ -54,6 +54,13 @@ class IModuleTest < Test::Unit::TestCase
             assert_equal("Hello World", @imodule.modify("heLLo wORLd", "*"))
           end
 
+          should "return the original value if a non existing modifier is passed to modify" do
+            assert_equal("Hello World", @imodule.modify("Hello World", "x"))
+          end
+
+          should "return the original value if a nil modifier is passed to modify" do
+            assert_equal("Hello World", @imodule.modify("Hello World", nil))
+          end
       end
 
     end
