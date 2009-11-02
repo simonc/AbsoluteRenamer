@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{AbsoluteRenamer}
-  s.version = "1.0.4"
+  s.version = "1.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Simon COURTOIS"]
-  s.date = %q{2009-10-05}
+  s.date = %q{2009-11-02}
   s.default_executable = %q{absrenamer}
   s.description = %q{AbsoluteRenamer is a very powerful tool that helps files and directories renaming using the Krename syntax. Unlike many batch renaming tools, AbsoluteRenamer is able to rename folders. AbsoluteRenamer is modular and can be extended to adapt itself to any kind of file or to add new options and features.}
   s.email = %q{happynoff@free.fr}
