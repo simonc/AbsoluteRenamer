@@ -63,16 +63,19 @@ module AbsoluteRenamer
         end
 
         def self.add_replacement(data, options, regexp = false)
-            pattern,replace = data[0..1]
+            pattern, replace = data[0..1]
             replace ||= ''
             pattern = Regexp.new(pattern) if regexp
             moment = @format_given.nil? ? :before : :after
-            options[:replacements] ||= {}
-            options[:replacements][moment] ||= []
-            options[:replacements][moment] << {:type => pattern.class,
-                                               :pattern => pattern,
-                                               :replace => replace
-                                              }
+            options[:replacements] ||= {
+              :before => [],
+              :after  => []
+            }
+            options[:replacements][moment] << {
+              :type    => pattern.class,
+              :pattern => pattern,
+              :replace => replace
+            }
         end
     end
 end

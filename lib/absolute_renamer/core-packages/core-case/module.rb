@@ -1,14 +1,13 @@
 module AbsoluteRenamer
     class CaseModule < AbsoluteRenamer::IModule
         class << self
-            attr_reader :actions
-        
             def actions
-                @actions ||= {'*' => :camelize,
-                              '&' => :upper,
-                              '%' => :lower,
-                              '$' => :original
-                             }
+                {
+                  '*' => :camelize,
+                  '&' => :upper,
+                  '%' => :lower,
+                  '$' => :original
+                }
             end
 
             def camelize(str)

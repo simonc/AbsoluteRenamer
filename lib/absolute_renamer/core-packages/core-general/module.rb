@@ -1,15 +1,6 @@
 module AbsoluteRenamer
     class GeneralModule < AbsoluteRenamer::IModule
         def initialize
-            @actions = {
-                '*'  => :file_camelize,
-                '$'  => :file_original,
-                '%'  => :file_downcase,
-                '&'  => :file_upcase,
-                '\\' => :file_strip,
-                '#'  => :count
-            }
-
             @case_filters = [
                 /\\\*/,     # \*
                 /\\\$/,     # \$
@@ -39,40 +30,32 @@ module AbsoluteRenamer
         end
 
         def interpret(file, infos, type)
-            if (infos[0].length == 1)
-                self.method(@actions[infos[0][0].chr]).call(file, infos, type)
+            if (infos[0][0].chr == '#')
+              count(file, infos)
+            elsif (infos[0].length == 1)
+                file_case(file, infos[0], type)
             elsif (infos[0][1..6] == 'length')
-                self.length(file, infos, type)
+                length(file, infos)
             elsif (infos[0][0].chr == '[')
-                self.file_part(file, infos, type)
-            elsif (infos[0][0].chr == '#')
-                self.count(file, infos, type)
+                file_part(file, infos)
             else
                 infos[0][1].chr
             end
         end
 
-        def file_camelize(file, infos, type)
-            file.send(type).camelize
+        def file_case(file, modifier, type)
+          file_info = file.send(type)
+
+          if modifier.match /\\/
+              file_info.strip!
+          else
+              file_info = modify(file_info, modifier)
+          end
+
+          file_info
         end
 
-        def file_original(file, infos, type)
-            file.send(type)
-        end
-
-        def file_downcase(file, infos, type)
-            file.send(type).downcase
-        end
-
-        def file_upcase(file, infos, type)
-            file.send(type).upcase
-        end
-
-        def file_strip(file, infos, type)
-            file.send(type).strip
-        end
-
-        def file_part(file, infos, type)
+        def file_part(file, infos)
             matched = infos[0].match(/(\[([^\d])?(\d+)(((;)(\d+))|((-)(\d+)?))?\])/)
 
             x = matched[3].to_i - 1
@@ -97,33 +80,28 @@ module AbsoluteRenamer
             modify val, matched[2]
         end
 
-        def count(file, infos, type)
+        def count(file, infos)
             matched = infos[0].match(/(#+)(\{((-?\d+)(;(-?\d+)?)?)?\})?/)
             @counter ||= []
-            @last ||= nil
-            @current ||= 0
+            @last    ||= nil
 
-            @current = 0 if @last != file
-            @current += 1 if @last == file
+            @current = (@last != file) ? 0 : @current + 1
 
-            start = matched[4] || 1
-            step = matched[6] || 1
-            start = start.to_i
-            step = step.to_i
+            @counter[@current] ||= {
+                :value   => (matched[4] || 1).to_i,
+                :step    => (matched[6] || 1).to_i,
+            }
 
-            @counter[@current] ||= {:start => start,
-                                    :step => step,
-                                    :current => start - step
-                                   }
-
-            @counter[@current][:current] += @counter[@current][:step]
-            @last = file
-            val = @counter[@current][:current].to_s.rjust(matched[1].length, '0')
+            val = @counter[@current][:value].to_s.rjust(matched[1].length, '0')
             val.gsub!(/(0+)-/, '-\1')
+
+            @counter[@current][:value] += @counter[@current][:step]
+            @last = file
+
             val
         end
 
-        def length(file, infos, type)
+        def length(file, infos)
             matched = infos[0].match(/\[length(-(-?\d+))?\]/)
             file.name.length - matched[2].to_i
         end

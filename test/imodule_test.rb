@@ -32,14 +32,6 @@ class IModuleTest < Test::Unit::TestCase
         @infos = [nil, nil, '', 'matched']
       end
 
-      should "be able to interpret a matching result for filename" do
-        assert_equal(@default_string, @imodule.interpret(@fileinfo, @infos, :name))
-      end
-
-      should "be able to interpret a matching result for extension" do
-        assert_equal(@default_string, @imodule.interpret(@fileinfo, @infos, :ext))
-      end
-
       should "be able to build a pattern from a pattern_string" do
         assert_equal(/(\[(.)?test\])/, @imodule.pattern('test'))
       end

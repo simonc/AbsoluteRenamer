@@ -24,7 +24,6 @@ module AbsoluteRenamer
             @dir = File.directory?(@real_path)
             @name = File.basename(@real_path)
             unless @dir
-                # TODO utiliser une conf :dot
                 @ext = File.extname(@name)
                 @name.gsub!(Regexp.new('.' << @ext << '$'), '') unless @ext.empty?
                 @level = 0
@@ -92,17 +91,17 @@ module AbsoluteRenamer
             begin
                 File.symlink(@real_path, new_path)
             rescue NotImplemented
-                # TODO trouver mieux
                 puts "Error: cannot create symlinks"
             end
         end
 
-        def self.compare_level(a, b)
-          if (a.level == b.level)
-            return (a.name <= b.name) ? -1 : 1
-          else
-            return (a.level < b.level) ? 1 : -1
+        # Overriding the comparison operator to sort paths
+        # based on their depth.
+        def <=>(file_info)
+          if (self.level == file_info.level)
+            return (file_info.name <=> self.name)
           end
+          file_info.level <=> self.level
         end
     end
 end

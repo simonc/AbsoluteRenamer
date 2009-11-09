@@ -1,5 +1,4 @@
-$:.unshift(File.dirname(__FILE__)) unless
-  $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
+$:.unshift(File.dirname(__FILE__))
 
 require 'absolute_renamer/config'
 require 'absolute_renamer/with_children'
@@ -27,32 +26,26 @@ module AbsoluteRenamer
 
             # Creates the new names for each file passed to AbsoluteRenamer.
             #
-            # Asks to each module if he as something to replace
+            # Asks to each module if it as something to replace
             # in the name of each file.
             #
             # Calls the +before_names_generation+ entry point.
             def create_names_list
                 call_entry_point(:before_names_generation)
-                return if conf[:files].empty?
-                mods = {}
+
+                name_format = conf[:options][:format]
+                ext_format  = conf[:options][:ext_format]
+
                 conf[:files].each do |file|
-                    name = conf[:options][:format].clone
-                    ext = conf[:options][:ext_format].clone
                     do_replacements(file.name, :before)
-                    AbsoluteRenamer::IModule.children.each do |mod|
-                        mod_sym = mod.symbol
-                        mods[mod_sym] ||= mod.new
-                        name = mods[mod_sym].process(file, name)
-                        ext = mods[mod_sym].process(file, ext, :ext) unless file.dir
-                    end
+                    name, ext = AbsoluteRenamer::IModule.process(file, name_format.clone, ext_format.clone)
                     do_replacements(name, :after)
+
                     file.new_name = name
-                    file.new_name << '.' << ext unless (file.dir or file.ext.empty?)
+                    file.new_name << ".#{ext}" unless (file.dir or file.ext.empty?)
                 end
-                if (conf[:options][:dir] and conf[:options][:rec])
-                  conf[:files].sort! { |a, b| AbsoluteRenamer::FileInfo.compare_level(a, b) }
-                end
-                mods.clear
+
+                conf[:files].sort! if (conf[:options][:dir] and conf[:options][:rec])
             end
 
             # For each file/dir replaces his name by his new name.
@@ -63,16 +56,13 @@ module AbsoluteRenamer
             #   - after_file_renaming ;
             #   - after_batch_renaming.
             def do_renaming
-                if call_entry_point(:before_batch_renaming)
+                surround_with_entry_points(:batch_renaming) do
                     conf[:files].each do |file|
-                        if call_entry_point(:before_file_renaming, :file => file)
-                            if file.respond_to?(conf[:options][:mode])
-                                file.send(conf[:options][:mode])
-                            end
-                            call_entry_point(:after_file_renaming, :file => file)
+                        surround_with_entry_points(:file_renaming, :file => file) do
+                            file.send(conf[:options][:mode]) if file.respond_to? conf[:options][:mode]
+                            {:file => file}
                         end
                     end
-                    call_entry_point(:after_batch_renaming)
                 end
             end
 
@@ -84,11 +74,18 @@ module AbsoluteRenamer
                 end
             end
 
+            def surround_with_entry_points(ep, params = nil)
+              if call_entry_point("before_#{ep}".to_sym, params)
+                result = yield
+                call_entry_point("after_#{ep}".to_sym, result)
+              end
+            end
+
             # Calls the given entry point for each plugin available
             #
             # Ask to each plugin if it implements the entry point
             # and calls it with params if it isn't null.
-            # It keeps going will all plugins return true.
+            # It keeps going while all plugins return true.
             #
             # returns true if all plugins returned true
             def call_entry_point(ep, params = nil)
@@ -115,6 +112,7 @@ module AbsoluteRenamer
                 rescue NoMethodError
                     replacements = nil
                 end
+
                 unless replacements.nil?
                     replacements.each do |repl|
                         format.gsub!(repl[:pattern], repl[:replace])

@@ -25,9 +25,6 @@ module AbsoluteRenamer
                         exit 1
                     end
                     conf[:files] = self.get_files(ARGV, 0) || []
-                    conf[:options][:maxdepth] ||= 0
-                    conf[:options][:interactive] ||= :never
-                    conf[:options][:mode] ||= :rename
                     pp conf.get if conf[:debug]
                 end
             end
@@ -42,23 +39,25 @@ module AbsoluteRenamer
             #
             # Returns the files/directories list
             def get_files(list, depth)
-                files = []
+                files   = []
                 options = conf[:options]
 
                 list.each do |entry|
-                    return files unless File.exists?(entry)
-                    is_dir =   File.directory?(entry)
-                    mod_dir =  options[:dir]
-                    depth_ok = (depth < options[:maxdepth] or options[:maxdepth].zero?)
-                    mod_rec =  (options[:rec] and depth_ok)
+                    if File.exists?(entry)
+                        is_dir   = File.directory?(entry)
+                        mod_dir  = options[:dir]
+                        depth_ok = (depth < options[:maxdepth] or options[:maxdepth].zero?)
+                        mod_rec  = (options[:rec] and depth_ok)
 
-                    add_dir =  (is_dir and mod_dir)
-                    add_file = (!is_dir and !mod_dir)
-                    add_sub =  (is_dir and (mod_rec or (!mod_dir and depth < 1)))
+                        add_dir  = (is_dir and mod_dir)
+                        add_file = (!is_dir and !mod_dir)
+                        add_sub  = (is_dir and (mod_rec or (!mod_dir and depth < 1)))
 
-                    files << FileInfo.new(entry) if (add_dir or add_file)
-                    files += self.get_files(self.get_subentries(entry), depth + 1) if (add_sub)
+                        files << FileInfo.new(entry) if (add_dir or add_file)
+                        files += self.get_files(self.get_subentries(entry), depth + 1) if (add_sub)
+                    end
                 end
+
                 files
             end
 
@@ -66,7 +65,7 @@ module AbsoluteRenamer
             def get_subentries(path)
                 files = Dir.entries(path)
                 files.delete_if { |file| file[0,1] == '.' }
-                files.collect! { |file| path + '/' + file }
+                files.collect!  { |file| File.join(path, file) }
             end
         end
     end

@@ -13,6 +13,19 @@ module AbsoluteRenamer
             name.intern
         end
 
+        def self.process(file, name_format, ext_format)
+            @mods ||= {}
+
+            self.children.each do |mod|
+                mod_sym = mod.symbol
+                @mods[mod_sym] ||= mod.new
+                name_format = @mods[mod_sym].process(file, name_format)
+                ext_format = @mods[mod_sym].process(file, ext_format, :ext) unless file.dir
+            end
+
+            [name_format, ext_format]
+        end
+
         # Returns a format pattern generated from pattern_string that
         # can be used to match strings like [*test] in the filename format
         #   pattern('test') #=> '(\[(.)?test\])'
@@ -24,10 +37,8 @@ module AbsoluteRenamer
         #   modifiy('value', '&') #=> 'VALUE'
         #   modifiy('value', '*') #=> 'Value'
         def modify(val, modifier)
-            if CaseModule.actions.include?(modifier)
-                mod = CaseModule.method(CaseModule.actions[modifier])
-                val = mod.call(val)
-            end
+            modification = CaseModule.actions[modifier]
+            val = CaseModule.send(modification, val) unless modification.nil?
             val
         end
 
@@ -42,23 +53,20 @@ module AbsoluteRenamer
         def process(file, format, type = :name)
             return format if @filters.empty?
 
-            str = format
             result = []
             pattern = Regexp.union @filters
+            idx = format.index(pattern)
 
-            idx = str.index(pattern)
             while idx
-                matched = pattern.match(str).to_a
-                part = str.partition(matched[0])
+                matched = pattern.match(format).to_a
+                part = format.partition(matched[0])
                 result.push(part[0])
-                val = self.interpret(file, matched, type)
-                result.push(val)
-                str = part[2]
-                idx = str.index(pattern)
+                result.push self.interpret(file, matched, type)
+                format = part[2]
+                idx = format.index(pattern)
             end
-            result.push(str) unless str.empty?
+            result.push(format)
             format.replace(result.join)
-            format
         end
 
         # Interprets a matched pattern.
@@ -69,18 +77,7 @@ module AbsoluteRenamer
         # infos: the matched values depending of the pattern
         # type: the type of the renaming format (:name or :ext)
         def interpret(file, infos, type)
-            modifier = infos[2]
-            action = infos[3]
-
-            return conf[:options][:default_string] unless self.respond_to?(action.intern)
-
-            ap = self.method(action.intern)
-            val = ap.call(file, infos, type)
-            unless modifier.empty?
-                mp = CaseModule.method(CaseModule.actions[modifier])
-                val = mp.call(val)
-            end
-            val.empty? ? conf[:options][:default_string] : val
+          # This method has to be overriden in every module
         end
     end
 end
