@@ -11,9 +11,9 @@ module AbsoluteRenamer
     include AbsoluteRenamer::UseConfig
 
     attr_accessor :name, :new_name,
-            :path, :real_path,
-            :ext, :dir, :dir_path,
-            :level
+                  :path, :real_path,
+                  :ext, :dir, :dir_path,
+                  :level
 
     # Initializes a FileInfo.
     # path: the relative or absolute path of the file.
