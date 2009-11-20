@@ -37,7 +37,7 @@ module AbsoluteRenamer
       elsif (infos[0][1..6] == 'length')
         length(file, infos)
       elsif (infos[0][0].chr == '[')
-        file_part(file, infos)
+        file_part(file, infos, type)
       else
         infos[0][1].chr
       end
@@ -55,7 +55,7 @@ module AbsoluteRenamer
       file_info
     end
 
-    def file_part(file, infos)
+    def file_part(file, infos, type)
       matched = infos[0].match(/(\[([^\d])?(\d+)(((;)(\d+))|((-)(\d+)?))?\])/)
 
       x = matched[3].to_i - 1
