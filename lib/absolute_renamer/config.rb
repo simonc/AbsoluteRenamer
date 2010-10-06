@@ -4,21 +4,23 @@ module AbsoluteRenamer
   # Class handeling the configuration.
   class Config
     class << self
-      # Open and load a Yaml file into the +@conf+ variable.
-      # config_path: path of the file to load.
-      def load(config_path)
+      # Opens and loads a list of Yaml files into the +@conf+ variable.
+      # config_paths: list of files to load.
+      def load(config_paths)
         @conf ||= {
           :options => {
-            :ext_format  => '$',
-            :format    => '$',
-            :interactive => :never,
-            :maxdepth  => 0,
-            :mode    => :rename
+            :ext_format   => '$',
+            :format       => '$',
+            :interactive  => :never,
+            :maxdepth     => 0,
+            :mode         => :rename
           }
         }
 
-        if tmp_conf = YAML::load_file(config_path)
-          @conf.deep_merge! tmp_conf
+        config_paths.each do |conf_file|
+          if File.exists?(conf_file)
+            @conf.deep_merge!(tmp_conf) if tmp_conf = YAML::load_file(config_path)
+          end
         end
       end
 
