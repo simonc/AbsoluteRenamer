@@ -34,7 +34,7 @@ module AbsoluteRenamer
       end
 
       parser.on('--no-ext', '--no-extension', 'Removes the extension') do
-        options[:rm_ext] = true
+        options[:no_ext] = true
       end
 
       parser.on('-R', '--recursive',
