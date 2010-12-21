@@ -19,7 +19,9 @@ module AbsoluteRenamer
 
         config_paths.each do |conf_file|
           if File.exists?(conf_file)
-            @conf.deep_merge!(tmp_conf) if tmp_conf = YAML::load_file(config_path)
+            if tmp_conf = YAML::load_file(conf_file)
+              @conf.deep_merge!(tmp_conf)
+            end
           end
         end
       end

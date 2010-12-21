@@ -42,7 +42,7 @@ module AbsoluteRenamer
           do_replacements(name, :after)
 
           file.new_name = name
-          file.new_name << ".#{ext}" unless (file.dir or file.ext.empty?)
+          file.new_name << ".#{ext}" unless (file.dir or file.ext.empty? or conf[:options][:no_ext])
         end
 
         conf[:files].sort! if (conf[:options][:dir] and conf[:options][:rec])

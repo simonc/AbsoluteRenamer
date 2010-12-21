@@ -33,6 +33,10 @@ module AbsoluteRenamer
         raise "Format cannot contain the / character." if format.match(/\//)
       end
 
+      parser.on('--no-ext', '--no-extension', 'Removes the extension') do
+        options[:rm_ext] = true
+      end
+
       parser.on('-R', '--recursive',
                 'Rename files in subdirectories recursively') do
         options[:rec] = true
