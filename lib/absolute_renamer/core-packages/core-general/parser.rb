@@ -37,6 +37,10 @@ module AbsoluteRenamer
         options[:no_ext] = true
       end
 
+      parser.on('--dots N', Integer, 'Number of dots to get file extension') do |dots|
+        options[:dots] = dots
+      end
+
       parser.on('-R', '--recursive',
                 'Rename files in subdirectories recursively') do
         options[:rec] = true

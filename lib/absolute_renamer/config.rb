@@ -9,6 +9,7 @@ module AbsoluteRenamer
       def load(config_paths)
         @conf ||= {
           :options => {
+            :dots         => 1,
             :ext_format   => '$',
             :format       => '$',
             :interactive  => :never,
