@@ -12,6 +12,7 @@ class IModuleTest < Test::Unit::TestCase
   context "An IModule instance" do
 
     setup do
+      AbsoluteRenamer::Config.load('conf/absrenamer/absrenamer.conf')
       @imodule = AbsoluteRenamer::IModule.new
       @fileinfo = AbsoluteRenamer::FileInfo.new('/some/path/to/a_file.txt')
     end

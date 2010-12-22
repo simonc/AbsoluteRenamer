@@ -2,15 +2,9 @@ require 'test_helper'
 
 class ConfigTest < Test::Unit::TestCase
   context "The Config instance" do
-    
+
     should "exist" do
       assert_not_nil AbsoluteRenamer::Config
-    end
-    
-    should "raise ENOENT if config file not found" do
-      assert_raise(Errno::ENOENT) do
-        AbsoluteRenamer::Config.load('a file that must not be found')
-      end  
     end
 
     should "not raise ENOENT if config file is found" do
@@ -38,7 +32,6 @@ class ConfigTest < Test::Unit::TestCase
         AbsoluteRenamer::Config[:test_key] = :test_val
         assert_equal(:test_val, AbsoluteRenamer::Config[:test_key])
       end
-      
     end
 
   end

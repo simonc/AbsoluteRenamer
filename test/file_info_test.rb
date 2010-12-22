@@ -2,27 +2,28 @@ require 'test_helper'
 
 class FileInfoTest < Test::Unit::TestCase
   context "A FileInfo instance" do
-    context "loaded with some/path/to/a_file.txt" do
+    context "loaded with /tmp/test-absrenamer.txt" do
 
       setup do
-        @pwd = Dir.pwd
-        @fileinfo = AbsoluteRenamer::FileInfo.new('some/path/to/a_file.txt')
+        AbsoluteRenamer::Config.load('conf/absrenamer/absrenamer.conf')
+        `touch /tmp/test-absrenamer.txt`
+        @fileinfo = AbsoluteRenamer::FileInfo.new('/tmp/test-absrenamer.txt')
       end
 
-      should "have as name : a_file" do
-        assert_equal('a_file', @fileinfo.name)
+      should "have as name : test-absrenamer" do
+        assert_equal('test-absrenamer', @fileinfo.name)
       end
 
-      should "have as dir_path : pwd/some/path/to" do
-        assert_equal(@pwd + '/some/path/to', @fileinfo.dir_path)
+      should "have as dir_path : /tmp" do
+        assert_equal('/tmp', @fileinfo.dir_path)
       end
 
-      should "have as path : some/path/to/a_file.txt" do
-        assert_equal('some/path/to/a_file.txt', @fileinfo.path)
+      should "have as path : /tmp/test-absrenamer.txt" do
+        assert_equal('/tmp/test-absrenamer.txt', @fileinfo.path)
       end
 
-      should "have as real_path : pwd/some/path/to/a_file.txt" do
-        assert_equal(@pwd + '/some/path/to/a_file.txt', @fileinfo.real_path)
+      should "have as real_path : /tmp/test-absrenamer.txt" do
+        assert_equal('/tmp/test-absrenamer.txt', @fileinfo.real_path)
       end
 
       should "have as ext : txt" do
@@ -39,27 +40,27 @@ class FileInfoTest < Test::Unit::TestCase
 
     end
 
-    context "loaded with lib/absolute_renamer" do
+    context "loaded with /usr/bin" do
 
       setup do
-        @pwd = Dir.pwd
-        @fileinfo = AbsoluteRenamer::FileInfo.new('lib/absolute_renamer')
+        AbsoluteRenamer::Config.load('conf/absrenamer/absrenamer.conf')
+        @fileinfo = AbsoluteRenamer::FileInfo.new('/usr/bin')
       end
 
-      should "have as name : absolute_renamer" do
-        assert_equal('absolute_renamer', @fileinfo.name)
+      should "have as name : bin" do
+        assert_equal('bin', @fileinfo.name)
       end
 
-      should "have as dir_path : pwd/lib" do
-        assert_equal(@pwd + '/lib', @fileinfo.dir_path)
+      should "have as dir_path : /usr" do
+        assert_equal('/usr', @fileinfo.dir_path)
       end
 
-      should "have as path : lib/absolute_renamer" do
-        assert_equal('lib/absolute_renamer', @fileinfo.path)
+      should "have as path : usr/bin" do
+        assert_equal('/usr/bin', @fileinfo.path)
       end
 
-      should "have as real_path : pwd/lib/absolute_renamer" do
-        assert_equal(@pwd + '/lib/absolute_renamer', @fileinfo.real_path)
+      should "have as real_path : /usr/bin" do
+        assert_equal('/usr/bin', @fileinfo.real_path)
       end
 
       should "have as ext : nil" do
