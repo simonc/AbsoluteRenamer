@@ -1,5 +1,6 @@
 $:.unshift(File.dirname(__FILE__))
 
+require 'absolute_renamer/version'
 require 'absolute_renamer/config'
 require 'absolute_renamer/with_children'
 require 'absolute_renamer/external'
@@ -12,11 +13,6 @@ require 'absolute_renamer/use_config'
 
 # top level module of AbsoluteRenamer.
 module AbsoluteRenamer
-  version_file_path = File.join(File.dirname(__FILE__), '/../VERSION')
-  File.open(version_file_path) do |f|
-    VERSION = f.read
-  end
-
   # The main class of AbsoluteRenamer.
   #
   # Organizes the files and directories renaming process.
