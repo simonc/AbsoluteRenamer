@@ -25,7 +25,7 @@ module AbsoluteRenamer
       @name = File.basename(@real_path)
       unless @dir
         @ext = File.extname(@name, conf[:options][:dots])
-        @name.gsub!(Regexp.new('.' << @ext << '$'), '') unless @ext.empty?
+        @name.gsub!(Regexp.new('.' << Regexp.escape(@ext) << '$'), '') unless @ext.empty?
         @level = 0
       else
         @level = @real_path.split('/').size
