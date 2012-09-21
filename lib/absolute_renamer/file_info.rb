@@ -1,4 +1,3 @@
-require 'ftools'
 require 'fileutils'
 require 'absolute_renamer/use_config'
 require 'absolute_renamer/libs/file'
